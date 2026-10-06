@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>C1 Noun Phrases – Interactive Practice</title>
+<style>
+body{font-family:Arial,sans-serif;max-width:1100px;margin:0 auto;padding:24px;background:#f5f7fb;color:#222;line-height:1.5}
+h1{margin-bottom:6px}.subtitle{color:#555;margin-top:0}
+.tabs{display:flex;flex-wrap:wrap;gap:8px;margin:20px 0}
+button,.tab{border:0;border-radius:8px;padding:10px 14px;cursor:pointer;font-weight:600}
+.tab{background:#dfe5ef}.tab.active{background:#333;color:white}
+.activity{display:none;background:white;padding:24px;border-radius:12px;box-shadow:0 2px 10px #0001}
+.activity.active{display:block}
+.question{margin:18px 0;padding:14px;border-bottom:1px solid #eee}
+input,select{padding:8px;border:1px solid #bbb;border-radius:6px;font-size:1rem;max-width:100%}
+input{min-width:240px}.correct{background:#e5f6e8;border-color:#42a85f}.wrong{background:#fde8e8;border-color:#c94c4c}
+.feedback{font-weight:600;margin-left:8px}.score{font-size:1.1rem;font-weight:700;margin:15px 0}
+.wordbank{display:flex;flex-wrap:wrap;gap:8px;background:#f0f3f8;padding:15px;border-radius:8px;margin-bottom:18px}
+.word{background:white;border:1px solid #ccd3df;padding:5px 9px;border-radius:5px}
+.check{background:#333;color:#fff;margin-top:10px}.reset{background:#e0e0e0;margin-top:10px}
+.progress{position:sticky;top:0;background:#fff;padding:10px;border-radius:8px;margin-bottom:15px;z-index:2}
+</style>
+</head>
+<body>
+<h1>C1 Noun Phrases – Interactive Practice</h1>
+<p class="subtitle">1º Bachillerato · C1 English</p>
+<div class="progress">Overall progress: <span id="overall">0 / 4 activities completed</span></div>
+
+<div class="tabs">
+<button class="tab active" onclick="showTab(1)">Activity 1</button>
+<button class="tab" onclick="showTab(2)">Activity 2</button>
+<button class="tab" onclick="showTab(3)">Activity 3</button>
+<button class="tab" onclick="showTab(4)">Activity 4</button>
+</div>
+
+<section id="a1" class="activity active">
+<h2>1. Using noun phrases instead of verb phrases</h2>
+<p>Complete the second sentence using a noun phrase and the keyword given.</p>
+<div id="q1"></div><button class="check" onclick="check1()">Check answers</button>
+<div id="s1" class="score"></div><button class="reset" onclick="resetActivity(1)">Reset activity</button>
+</section>
+
+<section id="a2" class="activity">
+<h2>2. Compound nouns and noun phrases</h2>
+<p>Complete each noun phrase with one item from the word bank. Use each option once.</p>
+<div class="wordbank">
+<span class="word">assessment</span><span class="word">change</span><span class="word">costs</span><span class="word">creation</span><span class="word">development</span><span class="word">energy</span><span class="word">fee</span><span class="word">guidance</span><span class="word">losses</span><span class="word">management</span><span class="word">protection</span><span class="word">research</span><span class="word">shortage</span><span class="word">support</span><span class="word">time</span>
+</div>
+<div id="q2"></div><button class="check" onclick="check2()">Check answers</button>
+<div id="s2" class="score"></div><button class="reset" onclick="resetActivity(2)">Reset activity</button>
+</section>
+
+<section id="a3" class="activity">
+<h2>3. Gerunds, infinitives and noun + preposition combinations</h2>
+<p>Complete each sentence with the correct form or preposition.</p>
+<div id="q3"></div><button class="check" onclick="check3()">Check answers</button>
+<div id="s3" class="score"></div><button class="reset" onclick="resetActivity(3)">Reset activity</button>
+</section>
+
+<section id="a4" class="activity">
+<h2>4. Rephrasing</h2>
+<p>Rewrite each sentence using the keyword. Do not change the meaning.</p>
+<div id="q4"></div><button class="check" onclick="check4()">Check answers</button>
+<div id="s4" class="score"></div><button class="reset" onclick="resetActivity(4)">Reset activity</button>
+</section>
+
+<script>
+function norm(s){return s.toLowerCase().trim().replace(/[.,!?;:]/g,'').replace(/\s+/g,' ')}
+function showTab(n){
+ document.querySelectorAll('.activity').forEach(x=>x.classList.remove('active'));
+ document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+ document.getElementById('a'+n).classList.add('active');
+ document.querySelectorAll('.tab')[n-1].classList.add('active');
+}
+const a1=[
+["She really likes working with children.","She has a strong ______ working with children.","FONDNESS","fondness for"],
+["The number of applications has increased considerably.","There has been a considerable ______ applications.","INCREASE","increase in"],
+["They decided to postpone the meeting.","They made the ______ the meeting.","DECISION","decision to postpone"],
+["The company failed to meet the deadline.","The company’s ______ the deadline caused problems.","FAILURE","failure to meet"],
+["You can choose between three alternatives.","You have a ______ three alternatives.","CHOICE","choice between"],
+["Scientists discovered a new species.","Scientists made the ______ a new species.","DISCOVERY","discovery of"],
+["People use social media extensively.","There is extensive ______ social media.","USE","use of"],
+["The company invested heavily in renewable energy.","The company made a heavy ______ renewable energy.","INVESTMENT","investment in"],
+["They reduced the number of working hours.","There was a ______ the number of working hours.","REDUCTION","reduction in"],
+["They introduced a new assessment system.","The ______ a new assessment system improved consistency.","INTRODUCTION","introduction of"]
+];
+const a2=[
+["The school has introduced a new student ___ programme to help learners adapt to academic life.","support"],["The factory is trying to increase renewable ___ production.","energy"],["Rising housing ___ are making it harder for young people to live independently.","costs"],["The company offers flexible working ___ arrangements to its employees.","time"],["Students can receive career ___ before applying for university courses.","guidance"],["The company reported significant job ___ after the restructuring.","losses"],["The university has introduced a new tuition ___ scheme for international students.","fee"],["The report examines the effects of climate ___ on coastal communities.","change"],["The city has launched a traffic ___ programme to reduce congestion.","management"],["New data ___ regulations have been introduced to protect users' personal information.","protection"],["The company has invested in employee ___ programmes.","development"],["The school has revised its ___ policy to make assessment more consistent.","assessment"],["The industry is facing a serious skills ___ in several specialised areas.","shortage"],["The university has opened a new ___ centre focusing on renewable technologies.","research"],["The government has announced a new job ___ initiative for young people.","creation"]
+];
+const a3=[
+["I regret that I was not able to attend the meeting.","I regret ______ the meeting."],
+["She wants to study abroad next year.","She is considering ______ next year."],
+["He did not reply to the email, which was a mistake.","His ______ to the email was a mistake."],
+["Learning a foreign language requires patience.","The ______ a foreign language requires patience."],
+["They invested in renewable energy.","Their ______ renewable energy was substantial."],
+["The number of applications has increased.","There has been an ______ applications."],
+["They reduced the cost of the service.","There was a ______ the cost of the service."],
+["Scientists discovered a new treatment.","The ______ a new treatment was significant."],
+["The number of errors has been reduced.","There has been a ______ the number of errors."],
+["People increasingly demand flexible working.","There is growing ______ flexible working."],
+["She is responsible ___ organising the event.","Preposition:"],
+["They have no objection ___ changing the date.","Preposition:"],
+["His focus is ___ improving performance.","Preposition:"],
+["The committee carried out an investigation ___ the causes.","Preposition:"],
+["There is a growing ___ affordable housing.","Complete the noun phrase:"]
+];
+const a4=[
+["The company failed to provide enough evidence.","FAILURE","The company’s ______ enough evidence."],
+["After she received her education in Britain, she returned home.","HAVING","______ her education in Britain, she returned home."],
+["People use social media extensively.","USE","There is extensive ______ social media."],
+["They introduced a new system.","INTRODUCTION","The ______ a new system was successful."],
+["The number of applications increased.","INCREASE","There was an ______ applications."],
+["The company invested in renewable energy.","INVESTMENT","The company made an ______ renewable energy."],
+["When she arrived late, she missed the opening speech.","ARRIVING","______ late, she missed the opening speech."],
+["Scientists discovered a new species.","DISCOVERY","The ______ a new species was unexpected."],
+["The project failed because there was not enough funding.","LACK","The project failed because of a ______ funding."],
+["They introduced stricter rules.","INTRODUCTION","The ______ stricter rules caused controversy."]
+];
+function render(){
+let h='';
+a1.forEach((x,i)=>h+=`<div class="question"><b>${i+1}.</b> ${x[0]}<br>${x[1].replace('______',`<input id="a1_${i}" placeholder="${x[2]}">`)}</div>`);q1.innerHTML=h;
+h='';a2.forEach((x,i)=>{h+=`<div class="question"><b>${i+1}.</b> ${x[0].replace('___',`<select id="a2_${i}"><option value="">— choose —</option>${a2.map(y=>`<option>${y[1]}</option>`).join('')}</select>`)}</div>`});q2.innerHTML=h;
+h='';a3.forEach((x,i)=>h+=`<div class="question"><b>${i+1}.</b> ${x[0]}<br>${x[1].replace('______',`<input id="a3_${i}">`).replace('Preposition:',`<input id="a3_${i}" placeholder="preposition">`).replace('Complete the noun phrase:',`<input id="a3_${i}" placeholder="noun">`)}</div>`);q3.innerHTML=h;
+h='';a4.forEach((x,i)=>h+=`<div class="question"><b>${i+1}.</b> ${x[0]}<br><small>Keyword: <b>${x[1]}</b></small><br>${x[2].replace('______',`<input id="a4_${i}">`)}</div>`);q4.innerHTML=h;
+}
+function mark(id,ok){let e=document.getElementById(id);e.classList.remove('correct','wrong');e.classList.add(ok?'correct':'wrong');}
+function check1(){let n=0;a1.forEach((x,i)=>{let ok=norm(document.getElementById('a1_'+i).value)===norm(x[3]);mark('a1_'+i,ok);if(ok)n++});s1.textContent=`Score: ${n}/${a1.length}`;update()}
+function check2(){let n=0;a2.forEach((x,i)=>{let ok=document.getElementById('a2_'+i).value===x[1];mark('a2_'+i,ok);if(ok)n++});s2.textContent=`Score: ${n}/${a2.length}`;update()}
+const ans3=["not being able to attend","studying abroad","failure to reply","learning of","investment in","increase in","reduction in","discovery of","reduction in","demand for","for","to","on","into","need for"];
+function check3(){let n=0;ans3.forEach((a,i)=>{let ok=norm(document.getElementById('a3_'+i).value)===norm(a);mark('a3_'+i,ok);if(ok)n++});s3.textContent=`Score: ${n}/${ans3.length}`;update()}
+const ans4=["failure to provide","having received","use of","introduction of","increase in","investment in","arriving","lack of","lack of","introduction of"];
+function check4(){let n=0;ans4.forEach((a,i)=>{let ok=norm(document.getElementById('a4_'+i).value)===norm(a);mark('a4_'+i,ok);if(ok)n++});s4.textContent=`Score: ${n}/${ans4.length}`;update()}
+function resetActivity(n){
+  const prefix='a'+n+'_';
+  document.querySelectorAll('[id^="'+prefix+'"]').forEach(el=>{if(el.tagName==='INPUT')el.value='';if(el.tagName==='SELECT')el.selectedIndex=0;el.classList.remove('correct','wrong');});
+  const score=document.getElementById('s'+n); if(score) score.textContent=''; update();
+}
+function update(){let done=0;for(let i=1;i<=4;i++){if(document.getElementById('s'+i).textContent.includes('Score:'))done++}overall.textContent=`${done} / 4 activities completed`}
+render();
+</script>
+</body>
+</html>
